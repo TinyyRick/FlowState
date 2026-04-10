@@ -1,0 +1,79 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: Build (${{ matrix.os }} ${{ matrix.arch }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: macos-latest
+            arch: arm64
+            builder_args: --mac --arm64
+          - os: macos-latest
+            arch: x64
+            builder_args: --mac --x64
+          - os: windows-latest
+            arch: x64
+            builder_args: --win --x64
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
+      - name: Typecheck
+        run: npm run lint
+
+      - name: Build renderer
+        run: npm run build
+
+      - name: Package
+        run: npx electron-builder ${{ matrix.builder_args }} --publish=never
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: FlowState-${{ matrix.os }}-${{ matrix.arch }}
+          path: |
+            dist_electron/*.dmg
+            dist_electron/*.zip
+            dist_electron/*.exe
+            dist_electron/*.blockmap
+            dist_electron/latest*.yml
+
+  release:
+    name: Publish GitHub Release
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+
+      - name: Publish
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            artifacts/**/FlowState-*.dmg
+            artifacts/**/FlowState-*.zip
+            artifacts/**/*.exe
+            artifacts/**/*.blockmap
+            artifacts/**/latest*.yml

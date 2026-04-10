@@ -1,28 +1,71 @@
 {
-  "name": "flowstate---adhd-外置大脑",
+  "name": "flowstate",
   "private": true,
   "version": "0.0.0",
+  "license": "MIT",
+  "description": "一个极简的执行功能辅助工具，旨在降低认知负荷，将时间可视化，并利用 AI 将复杂任务拆解为立即执行的微行动。",
   "type": "module",
+  "main": "main.js",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "lint": "tsc --noEmit"
+    "lint": "tsc --noEmit",
+    "electron:dev": "concurrently -k \"vite --port 5173\" \"electron .\"",
+    "electron:build": "npm run build && electron-builder",
+    "electron:build:mac:arm64": "npm run build && electron-builder --mac --arm64 --publish=never",
+    "electron:build:mac:x64": "npm run build && electron-builder --mac --x64 --publish=never",
+    "electron:build:win:x64": "npm run build && electron-builder --win --x64 --publish=never"
   },
   "dependencies": {
+    "clsx": "^2.1.0",
+    "date-fns": "^2.30.0",
+    "lucide-react": "^0.562.0",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
-    "@google/genai": "^1.34.0",
     "recharts": "^2.12.0",
-    "lucide-react": "^0.562.0",
-    "date-fns": "^2.30.0",
-    "clsx": "^2.1.0",
     "tailwind-merge": "^2.2.0"
   },
   "devDependencies": {
+    "@tailwindcss/postcss": "^4.2.2",
+    "@tailwindcss/vite": "^4.2.2",
     "@types/node": "^22.14.0",
     "@vitejs/plugin-react": "^5.0.0",
+    "autoprefixer": "^10.4.27",
+    "concurrently": "^9.2.1",
+    "cross-env": "^10.1.0",
+    "electron": "^41.0.3",
+    "electron-builder": "^26.8.1",
+    "postcss": "^8.5.8",
+    "tailwindcss": "^4.2.2",
     "typescript": "~5.8.2",
     "vite": "^6.2.0"
+  },
+  "build": {
+    "appId": "com.flowstate.app",
+    "productName": "FlowState",
+    "artifactName": "${productName}-${version}-${arch}.${ext}",
+    "directories": {
+      "output": "dist_electron"
+    },
+    "files": [
+      "dist/**/*",
+      "main.js",
+      "preload.js",
+      "package.json",
+      "node_modules/**/*"
+    ],
+    "mac": {
+      "target": [
+        "dmg",
+        "zip"
+      ]
+    },
+    "win": {
+      "target": "nsis"
+    },
+    "linux": {
+      "target": "AppImage"
+    }
   }
 }

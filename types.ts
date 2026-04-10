@@ -9,6 +9,7 @@ declare global {
   interface Window {
     electron?: {
       setIgnoreMouseEvents: (ignore: boolean, options?: { forward: boolean }) => void;
+      quitApp: () => void;
     };
   }
 }
@@ -91,6 +92,9 @@ export interface StickyNote {
   id: string;
   x: number;
   y: number;
+  width?: number;
+  height?: number;
+  zIndex?: number;
   content: string;
   type: StickyType;
   createdAt: number;
