@@ -1,6 +1,6 @@
 # FlowState
 
-一个极简的执行功能辅助工具，旨在降低认知负荷，将时间可视化，并利用 AI 将复杂任务拆解为立即执行的微行动。
+一个极简的执行功能辅助工具，旨在降低认知负荷，即刻记录你的想法和任务。
 
 <img width="829" height="685" alt="image" src="https://github.com/user-attachments/assets/7b6c0e98-2915-4a65-9288-832623c4c148" />
 
