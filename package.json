@@ -1,9 +1,9 @@
 {
   "name": "flowstate",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.1.0",
   "license": "MIT",
-  "description": "一个极简的执行功能辅助工具，旨在降低认知负荷，将时间可视化，并利用 AI 将复杂任务拆解为立即执行的微行动。",
+  "description": "一个极简的执行功能辅助工具，旨在降低记忆负荷，通过便利贴的形式帮助用户快速记录和执行任务。",
   "type": "module",
   "main": "main.js",
   "scripts": {

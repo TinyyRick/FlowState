@@ -41,6 +41,8 @@ export default function App() {
   // --- State ---
   const [mode, setMode] = useState<AppMode>(AppMode.DASHBOARD);
   const today = new Date();
+  const todayKey = format(today, 'yyyy-MM-dd');
+  const todayStartTimestamp = startOfDay(today).getTime();
   
   // Data
   const [notes, setNotes] = useLocalStorage<StickyNote[]>('flowstate_notes', [
@@ -187,6 +189,26 @@ export default function App() {
     timerRef.current = timer;
   }, [timer]);
 
+  useEffect(() => {
+    // Close leftover open work sessions from previous days on startup.
+    setWorkSessions(prev => {
+      let hasChanges = false;
+      const nextSessions = prev.map(session => {
+        if (session.endTime || session.startTime >= todayStartTimestamp) {
+          return session;
+        }
+
+        hasChanges = true;
+        return {
+          ...session,
+          endTime: endOfDay(new Date(session.startTime)).getTime(),
+        };
+      });
+
+      return hasChanges ? nextSessions : prev;
+    });
+  }, [setWorkSessions, todayStartTimestamp]);
+
   // --- Computed ---
   const currentStatus = useMemo(() => {
     if (statusLogs.length === 0) return null;
@@ -194,8 +216,12 @@ export default function App() {
   }, [statusLogs]);
 
   const activeWorkSession = useMemo(() => {
-    return workSessions.find(s => !s.endTime);
-  }, [workSessions]);
+    return workSessions.find(s => !s.endTime && s.startTime >= todayStartTimestamp);
+  }, [todayStartTimestamp, workSessions]);
+
+  const todayCompletedTasks = useMemo(() => {
+    return completedTasks.filter(task => format(task.createdAt, 'yyyy-MM-dd') === todayKey);
+  }, [completedTasks, todayKey]);
 
   // --- Actions ---
 
@@ -1388,9 +1414,9 @@ export default function App() {
                   className="w-10 h-10 rounded-full bg-white/40 hover:bg-emerald-100/80 border border-white/60 shadow-sm flex items-center justify-center text-emerald-600 hover:scale-110 transition-all"
                 >
                   <CheckCircle2 size={18} />
-                  {completedTasks.length > 0 && (
+                  {todayCompletedTasks.length > 0 && (
                     <span className="absolute -bottom-1 -right-1 w-4 h-4 bg-emerald-500 text-white text-[9px] font-bold rounded-full flex items-center justify-center border border-white shadow-sm">
-                      {completedTasks.length}
+                      {todayCompletedTasks.length}
                     </span>
                   )}
                 </button>
@@ -1412,8 +1438,8 @@ export default function App() {
                       <button onClick={() => setIsLogOpen(false)} className="text-slate-400 hover:text-slate-600"><X size={14}/></button>
                     </div>
                     <div className="space-y-2 max-h-48 overflow-y-auto custom-scrollbar">
-                      {completedTasks.length === 0 && <span className="text-xs text-emerald-500 italic">暂无任务</span>}
-                      {completedTasks.map(t => (
+                      {todayCompletedTasks.length === 0 && <span className="text-xs text-emerald-500 italic">暂无任务</span>}
+                      {todayCompletedTasks.map(t => (
                         <div key={t.id} className="flex items-center justify-between gap-2 text-xs text-slate-700 p-2 bg-white/50 rounded-lg border border-white/60">
                           <div className="flex items-start gap-2">
                             <CheckCircle2 size={14} className="text-emerald-500 shrink-0 mt-0.5"/>
