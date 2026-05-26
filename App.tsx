@@ -7,6 +7,7 @@ import {
   Coffee, Moon, Sun, Smile, Meh, Frown, MessageSquare, Check
 } from 'lucide-react';
 import { AppMode, TaskSession, STATUS_MATRIX, StatusLog, BrowserSession, StickyNote, StickyType, NoteStatus, ColorLabel, WorkSession, DailySummary } from './types';
+import { formatDuration } from './utils';
 import { format, addDays, eachDayOfInterval, isSameDay, endOfMonth, startOfMonth, subMonths, addMonths, startOfDay, endOfDay } from 'date-fns';
 import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, LineChart, Line } from 'recharts';
 import { clsx, type ClassValue } from 'clsx';
@@ -1250,7 +1251,7 @@ export default function App() {
 
               <div className="flex flex-col items-center justify-center py-12 bg-white/30 rounded-3xl border border-white/50 shadow-inner">
                 <div className="text-5xl font-mono font-light text-slate-800 tabular-nums mb-2">
-                  {new Date(timer * 1000).toISOString().substr(14, 5)}
+                  {formatDuration(timer)}
                 </div>
                 <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">已专注时间</div>
               </div>
@@ -1515,7 +1516,7 @@ export default function App() {
                       <div className={cn("w-2 h-2 rounded-full animate-pulse", browserTimeLimit < 60 ? "bg-red-500" : "bg-emerald-500")} />
                       <span className="flex items-center gap-2 text-xs font-mono text-slate-500 uppercase tracking-widest"><Lock size={12}/> 安全容器</span>
                    </div>
-                   <div className={cn("flex items-center gap-2 font-mono text-2xl font-light tabular-nums", browserTimeLimit < 60 ? "text-red-600 font-bold scale-110" : "text-slate-800")}>{new Date(browserTimeLimit * 1000).toISOString().substr(14, 5)}</div>
+                   <div className={cn("flex items-center gap-2 font-mono text-2xl font-light tabular-nums", browserTimeLimit < 60 ? "text-red-600 font-bold scale-110" : "text-slate-800")}>{formatDuration(browserTimeLimit)}</div>
                    <button onClick={() => setMode(AppMode.DASHBOARD)} className="flex items-center gap-2 text-xs font-bold text-slate-400 hover:text-red-600 transition-colors"><Power size={14} /> 强制退出</button>
                 </div>
                 <iframe src={browserUrl.startsWith('http') ? browserUrl : `https://${browserUrl}`} className="flex-1 w-full border-0"/>

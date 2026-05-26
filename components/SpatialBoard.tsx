@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { StickyNote, StickyType, NoteStatus, ColorLabel } from '../types';
+import { formatDuration } from '../utils';
 import { X, Play, Pause, Square, AlertOctagon, Lightbulb, MousePointer2, Clock, Check, Plus, Loader2, CornerDownLeft, ArrowRight, Sparkles, BrainCircuit, Tag, Edit2 } from 'lucide-react';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
@@ -25,7 +26,7 @@ const ActiveTaskTimer = React.memo(
       return () => clearInterval(interval);
     }, [timerRef, status]);
 
-    return <>{new Date(value * 1000).toISOString().substr(14, 5)}</>;
+    return <>{formatDuration(value)}</>;
   }
 );
 
