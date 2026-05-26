@@ -578,7 +578,7 @@ export default function App() {
              }
            }}
         >
-           <div className="bg-white/65 backdrop-blur-2xl w-full max-w-4xl max-h-[90vh] rounded-3xl p-7 shadow-[0_20px_70px_rgba(15,23,42,0.35)] border border-white/60 relative flex flex-col overflow-hidden">
+           <div className="bg-white/65 backdrop-blur-2xl w-[900px] h-[700px] rounded-3xl p-7 shadow-[0_20px_70px_rgba(15,23,42,0.35)] border border-white/60 relative flex flex-col overflow-hidden">
               <button onClick={() => { setIsCalendarExpanded(false); setSelectedDate(null); }} className="absolute top-5 right-5 w-10 h-10 rounded-full bg-white/30 border border-white/60 hover:bg-white/50 transition-colors flex items-center justify-center text-slate-600 z-10"><X size={18}/></button>
               
               <div className="flex items-center justify-between mb-4 shrink-0">
