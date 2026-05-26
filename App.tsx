@@ -616,9 +616,9 @@ export default function App() {
                 </button>
               </div>
 
-              <div className="flex-1 overflow-y-auto custom-scrollbar pr-2">
-                <div className="grid grid-cols-1 md:grid-cols-[1fr_360px] gap-6 pb-2">
-                  <div className="bg-white/25 border border-white/55 rounded-3xl p-5 h-fit">
+              <div className="flex-1 overflow-hidden pr-2">
+                <div className="grid grid-cols-1 md:grid-cols-[1fr_360px] gap-6 h-full pb-2">
+                  <div className="bg-white/25 border border-white/55 rounded-3xl p-5 h-full overflow-y-auto custom-scrollbar">
                     <div className="grid grid-cols-7 gap-3">
                     {['日', '一', '二', '三', '四', '五', '六'].map(d => (
                       <div key={d} className="text-center text-[10px] font-bold text-slate-600 uppercase tracking-wider">{d}</div>
@@ -671,10 +671,10 @@ export default function App() {
                   </div>
                 </div>
 
-                <div className="bg-white/25 border border-white/55 rounded-3xl p-5 flex flex-col min-h-[420px]">
+                <div className="bg-white/25 border border-white/55 rounded-3xl p-5 flex flex-col h-full overflow-hidden">
                   {selectedDate ? (
                     <>
-                      <div className="flex items-center justify-between mb-4">
+                      <div className="flex items-center justify-between mb-4 shrink-0">
                         <div>
                           <div className="text-[10px] font-bold text-slate-600 uppercase tracking-wider">日详情</div>
                           <div className="text-lg font-bold text-slate-800">{format(selectedDate, 'M月d日')}</div>
