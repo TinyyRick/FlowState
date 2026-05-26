@@ -578,10 +578,10 @@ export default function App() {
              }
            }}
         >
-           <div className="bg-white/65 backdrop-blur-2xl w-full max-w-4xl rounded-3xl p-7 shadow-[0_20px_70px_rgba(15,23,42,0.35)] border border-white/60 relative">
-              <button onClick={() => { setIsCalendarExpanded(false); setSelectedDate(null); }} className="absolute top-5 right-5 w-10 h-10 rounded-full bg-white/30 border border-white/60 hover:bg-white/50 transition-colors flex items-center justify-center text-slate-600"><X size={18}/></button>
+           <div className="bg-white/65 backdrop-blur-2xl w-full max-w-4xl max-h-[90vh] rounded-3xl p-7 shadow-[0_20px_70px_rgba(15,23,42,0.35)] border border-white/60 relative flex flex-col overflow-hidden">
+              <button onClick={() => { setIsCalendarExpanded(false); setSelectedDate(null); }} className="absolute top-5 right-5 w-10 h-10 rounded-full bg-white/30 border border-white/60 hover:bg-white/50 transition-colors flex items-center justify-center text-slate-600 z-10"><X size={18}/></button>
               
-              <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center justify-between mb-4 shrink-0">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-2xl bg-white/35 border border-white/60 flex items-center justify-center text-indigo-600 shadow-sm">
                     <CalendarIcon size={18} />
@@ -593,7 +593,7 @@ export default function App() {
                 </div>
               </div>
               
-              <div className="flex items-center justify-center gap-2 mb-6">
+              <div className="flex items-center justify-center gap-2 mb-6 shrink-0">
                 <button 
                   onClick={() => setCalendarViewDate(prev => subMonths(prev, 1))}
                   className="w-10 h-10 rounded-full bg-white/25 border border-white/60 hover:bg-white/45 transition-colors flex items-center justify-center text-slate-600"
@@ -616,9 +616,10 @@ export default function App() {
                 </button>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-[1fr_360px] gap-6">
-                <div className="bg-white/25 border border-white/55 rounded-3xl p-5">
-                  <div className="grid grid-cols-7 gap-3">
+              <div className="flex-1 overflow-y-auto custom-scrollbar pr-2">
+                <div className="grid grid-cols-1 md:grid-cols-[1fr_360px] gap-6 pb-2">
+                  <div className="bg-white/25 border border-white/55 rounded-3xl p-5 h-fit">
+                    <div className="grid grid-cols-7 gap-3">
                     {['日', '一', '二', '三', '四', '五', '六'].map(d => (
                       <div key={d} className="text-center text-[10px] font-bold text-slate-600 uppercase tracking-wider">{d}</div>
                     ))}
@@ -813,6 +814,7 @@ export default function App() {
                       <div className="text-xs text-slate-500 mt-1">在右侧查看当天总结与完成记录</div>
                     </div>
                   )}
+                  </div>
                 </div>
               </div>
            </div>
